@@ -11,7 +11,6 @@ class CartDecisionTree:
             self.isLeaf = isLeaf
             self.cls = cls
             self.depth = depth
-            self.featuers = None
 
     def __init__(self, Data,depth=10):  # data is a dataframe
         self.data = Data
@@ -194,6 +193,7 @@ class CartDecisionTree:
                 numberOfTrues += 1
             index += 1
         print("number Of trues is : " + str(numberOfTrues) + " ; Total Number is " + str(len(Y_Test)))
+        return (numberOfTrues / len(Y_Test)) * 100
 
 
 
@@ -212,24 +212,25 @@ class CartDecisionTree:
                 if(featureInfo["giniTotal"] < minimum["giniTotal"]) : 
                     minimum = featureInfo
         return minimum
+# ==================================== usage ==================================
+# from sklearn import tree
+# from sklearn import model_selection
+# import numpy as np
+# import os
 
-from sklearn import tree
-from sklearn import model_selection
-import numpy as np
-import os
+# path = os.path.realpath("../testData/cardio_train.csv")
 
-path = os.path.realpath("../testData/cardio_train.csv")
+# data = pd.read_csv(path,header=0, sep=";")
+# header = ["gender","ap_hi","ap_lo","cholesterol","gluc","smoke","alco","active","cardio"]
+# data = data[header]
+# X = data[data.columns[0:len(data.columns) - 1]]
+# X = X.values.tolist()
+# Y = data["cardio"].tolist()
+# X_train, X_test, y_train, y_test = model_selection.train_test_split(X, Y, test_size=0.1)
+# data = pd.DataFrame(np.array(X_train),columns=header[:len(header) - 1])
+# data["cardio"] = y_train
 
-data = pd.read_csv(path,header=0, sep=";")
-header = ["gender","ap_hi","ap_lo","cholesterol","gluc","smoke","alco","active","cardio"]
-data = data[header]
-X = data[data.columns[0:len(data.columns) - 1]]
-X = X.values.tolist()
-Y = data["cardio"].tolist()
-X_train, X_test, y_train, y_test = model_selection.train_test_split(X, Y, test_size=0.1)
-data = pd.DataFrame(np.array(X_train),columns=header[:len(header) - 1])
-data["cardio"] = y_train
-
-tree = CartDecisionTree(data,depth=5)
-tree.train()
-tree.getAccuracy(X_test,y_test)
+# tree = CartDecisionTree(data,depth=5)
+# tree.train()
+# tree.getAccuracy(X_test,y_test)
+# =============================================================================
